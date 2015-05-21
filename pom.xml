@@ -4,7 +4,7 @@
 
     <groupId>com.olenick.avatar.icare2</groupId>
     <artifactId>icare2</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -12,7 +12,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/ielia/olenick-avatar-icare2.git</connection>
-        <tag>HEAD</tag>
+        <tag>icare2-1.0.2</tag>
     </scm>
 
     <distributionManagement>
