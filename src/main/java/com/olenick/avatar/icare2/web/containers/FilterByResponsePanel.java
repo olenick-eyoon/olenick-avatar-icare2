@@ -2,6 +2,7 @@ package com.olenick.avatar.icare2.web.containers;
 
 import javax.validation.constraints.NotNull;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import org.openqa.selenium.By;
 
 import com.olenick.avatar.icare2.model.ResponseFilter;
@@ -14,16 +15,7 @@ import com.olenick.selenium.elements.ExtendedWebElement;
  * "Filter by Response" panel inside "REPORT FILTERS".
  */
 public class FilterByResponsePanel extends WebContainer<FilterByResponsePanel> {
-    private static final String ELEMENT_ID_ADD_BUTTON = "customselect1_addbutton";
-    private static final String ELEMENT_ID_APPLY_BUTTON = "btnitem";
-    private static final String ELEMENT_ID_AVAILABLE_LIST = "customselect1_selectfrom";
-    private static final String ELEMENT_ID_CLOSE_BUTTON = "imgflqst";
-    private static final String ELEMENT_ID_COMPOSITE_SELECT = "qfactor";
-    private static final String ELEMENT_ID_ITEM_SELECT = "qitem";
-    private static final String ELEMENT_ID_PATIENT_TYPE_SELECT = "qpattype";
-    private static final String ELEMENT_ID_REMOVE_BUTTON = "customselect1_removebutton";
-    private static final String ELEMENT_ID_SELECTED_LIST = "custlist";
-    private static final String ELEMENT_ID_SURVEY_TYPE_SELECT = "qsurtype";
+    private static ICare2Props appProps = ICare2Props.getInstance();
 
     private PatientExperienceIFrame parent;
 
@@ -78,29 +70,29 @@ public class FilterByResponsePanel extends WebContainer<FilterByResponsePanel> {
     @Override
     public FilterByResponsePanel waitForElementsToLoad() {
         this.closeButton.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_CLOSE_BUTTON)));
+                .id(appProps.getRF_ELEMENT_ID_CLOSE_BUTTON())));
 
         this.surveyTypeSelect.setUnderlyingWebElement(this.driver
-                .findElement(By.id(ELEMENT_ID_SURVEY_TYPE_SELECT)));
+                .findElement(By.id(appProps.getRF_ELEMENT_ID_SURVEY_TYPE_SELECT())));
         this.patientTypeSelect.setUnderlyingWebElement(this.driver
-                .findElement(By.id(ELEMENT_ID_PATIENT_TYPE_SELECT)));
+                .findElement(By.id(appProps.getRF_ELEMENT_ID_PATIENT_TYPE_SELECT())));
         this.compositeSelect.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_COMPOSITE_SELECT)));
+                .id(appProps.getRF_ELEMENT_ID_COMPOSITE_SELECT())));
 
         this.itemSelect.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_ITEM_SELECT)));
+                .id(appProps.getRF_ELEMENT_ID_ITEM_SELECT())));
 
         this.availableList.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_AVAILABLE_LIST)));
+                .id(appProps.getRF_ELEMENT_ID_AVAILABLE_LIST())));
         this.addButton.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_ADD_BUTTON)));
+                .id(appProps.getRF_ELEMENT_ID_ADD_BUTTON())));
         this.removeButton.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_REMOVE_BUTTON)));
+                .id(appProps.getRF_ELEMENT_ID_REMOVE_BUTTON())));
         this.selectedList.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_SELECTED_LIST)));
+                .id(appProps.getRF_ELEMENT_ID_SELECTED_LIST())));
 
         this.applyButton.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_APPLY_BUTTON)));
+                .id(appProps.getRF_ELEMENT_ID_APPLY_BUTTON())));
 
         return this;
     }

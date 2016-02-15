@@ -28,6 +28,8 @@ public abstract class WelcomePageIFrame<T extends WebContainer<T>> extends
     private static final long TIMEOUT_SECS_LOADING_IFRAME = 200;
     private static final long TIMEOUT_SECS_SWITCH_TO_FRAME = 240;
 
+    //TODO: this final var is defined also in LoggedInWelcomePage, unify this
+    protected static final String ELEMENT_NAME_MAIN_IFRAME = "main-iframe";
     protected static final String ELEMENT_NAME_PANEL_IFRAME = "Panel_1_1";
 
     protected WebDriverWait waitForIFrame;
@@ -67,9 +69,11 @@ public abstract class WelcomePageIFrame<T extends WebContainer<T>> extends
     }
 
     public T accessPanelFrame() {
-        this.getDriver().switchTo().defaultContent();
-        this.getDriver().switchTo().frame(0);
+        //TODO: Check the following lines, it seems not necessary cause the access panel iframe is inside the main-iframe
+        this.driver.switchTo().defaultContent();
+        this.switchToFrame(ELEMENT_NAME_MAIN_IFRAME);
         this.switchToFrame(ELEMENT_NAME_PANEL_IFRAME);
+
         return this.castThis();
     }
 

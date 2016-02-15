@@ -1,7 +1,7 @@
 package com.olenick.avatar.icare2.web.containers;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import org.openqa.selenium.By;
-
 import com.olenick.selenium.containers.WebContainer;
 import com.olenick.selenium.drivers.ExtendedRemoteWebDriver;
 import com.olenick.selenium.elements.ExtendedWebElement;
@@ -13,18 +13,14 @@ import com.olenick.selenium.elements.ExtendedWebElement;
  * </p>
  */
 public class LoginPage extends WebContainer<LoginPage> {
-    public static final String ELEMENT_ID_INVALID_CREDENTIALS_ERROR_MESSAGE = "InvalidSignonError503";
-    private static final String ELEMENT_ID_PASSWORD_INPUT = "SignonPassName";
-    private static final String ELEMENT_ID_SUBMIT_BUTTON = "SignonbtnLogin";
-    private static final String ELEMENT_ID_USERNAME_INPUT = "SignonUserName";
-    private static final String RELATIVE_URL = "/signin";
+    private static ICare2Props appProps = ICare2Props.getInstance();
 
-    private ExtendedWebElement usernameInputField, passwordInputField,
-            submitButton;
+    private ExtendedWebElement usernameInputField, passwordInputField, submitButton;
     private String urlRoot;
 
     public LoginPage(ExtendedRemoteWebDriver driver, String urlRoot) {
         super(driver);
+
         this.driver = driver;
         this.urlRoot = urlRoot;
         this.usernameInputField = new ExtendedWebElement(this);
@@ -33,24 +29,34 @@ public class LoginPage extends WebContainer<LoginPage> {
     }
 
     public LoginPage open() {
-        this.driver.get(this.urlRoot + RELATIVE_URL);
+        this.driver.get(this.urlRoot + appProps.getRELATIVE_URL());
+
         return this;
     }
 
     public LoginPage sendUsername(String username) {
-        this.usernameInputField.clear();
-        this.usernameInputField.sendKeys(username);
+        //TODO: There should be a better way of asserting the sendkeys
+        do {
+            this.usernameInputField.clear();
+            this.usernameInputField.sendKeys(username);
+        } while (this.usernameInputField.getAttribute("value").isEmpty());
+
         return this;
     }
 
     public LoginPage sendPassword(String password) {
-        this.passwordInputField.clear();
-        this.passwordInputField.sendKeys(password);
+        //TODO: There should be a better way of asserting the sendkeys
+        do {
+            this.passwordInputField.clear();
+            this.passwordInputField.sendKeys(password);
+        } while (this.passwordInputField.getAttribute("value").isEmpty());
+
         return this;
     }
 
     public LoginPage submit() {
         this.submitButton.click();
+
         return this;
     }
 
@@ -58,24 +64,26 @@ public class LoginPage extends WebContainer<LoginPage> {
         this.sendUsername(username);
         this.sendPassword(password);
         this.submit();
+
         return new LoggedInWelcomePage(this.driver);
     }
 
     public LoginPage loginFailure(String username, String password) {
         this.login(username, password);
-        this.driver.findVisibleElement(By
-                .id(ELEMENT_ID_INVALID_CREDENTIALS_ERROR_MESSAGE));
+        this.driver.findVisibleElement(By.id(appProps.getELEMENT_ID_INVALID_CREDENTIALS_ERROR_MESSAGE()));
+
         return this;
     }
 
     @Override
     public LoginPage waitForElementsToLoad() {
-        this.usernameInputField.setUnderlyingWebElement(driver.findElement(By
-                .id(ELEMENT_ID_USERNAME_INPUT)));
-        this.passwordInputField.setUnderlyingWebElement(driver.findElement(By
-                .id(ELEMENT_ID_PASSWORD_INPUT)));
-        this.submitButton.setUnderlyingWebElement(driver.findElement(By
-                .id(ELEMENT_ID_SUBMIT_BUTTON)));
+        this.usernameInputField.setUnderlyingWebElement(
+                driver.findVisibleElement(By.id(appProps.getELEMENT_ID_USERNAME_INPUT())));
+        this.passwordInputField.setUnderlyingWebElement(
+                driver.findVisibleElement(By.id(appProps.getELEMENT_ID_PASSWORD_INPUT())));
+        this.submitButton.setUnderlyingWebElement(
+                driver.findVisibleElement(By.id(appProps.getELEMENT_ID_SUBMIT_BUTTON())));
+
         return this;
     }
 }

@@ -2,6 +2,7 @@ package com.olenick.avatar.icare2.web.containers;
 
 import javax.validation.constraints.NotNull;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import org.openqa.selenium.By;
 
 import com.olenick.avatar.icare2.model.PatientDemographics;
@@ -15,16 +16,7 @@ import com.olenick.selenium.elements.ExtendedWebElement;
  */
 public class FilterByDemographicsPanel extends
         WebContainer<FilterByDemographicsPanel> {
-    public static final String ELEMENT_ID_ADMISSION_SOURCE_SELECT = "ptadmission";
-    public static final String ELEMENT_ID_AGE_SELECT = "ptage";
-    public static final String ELEMENT_ID_APPLY_BUTTON = "buttonadd";
-    public static final String ELEMENT_ID_CLOSE_BUTTON = "imgdgrph";
-    public static final String ELEMENT_ID_DISCHARGE_STATUS_SELECT = "ptdischarge";
-    public static final String ELEMENT_ID_GENDER_SELECT = "ptgender";
-    public static final String ELEMENT_ID_LANGUAGE_SELECT = "ptlanguage";
-    public static final String ELEMENT_ID_LENGTH_OF_STAY = "ptlength";
-    public static final String ELEMENT_ID_RACE_SELECT = "ptrace";
-    public static final String ELEMENT_ID_SERVICE_LINE_SELECT = "ptservice";
+    private static ICare2Props appProps = ICare2Props.getInstance();
 
     private PatientExperienceIFrame parent;
 
@@ -84,28 +76,28 @@ public class FilterByDemographicsPanel extends
     @Override
     public FilterByDemographicsPanel waitForElementsToLoad() {
         this.closeButton.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_CLOSE_BUTTON)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_CLOSE_BUTTON())));
 
         this.admissionSourceSelect.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_ADMISSION_SOURCE_SELECT)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_ADMISSION_SOURCE_SELECT())));
         this.ageSelect.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_AGE_SELECT)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_AGE_SELECT())));
         this.dischargeStatusSelect.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_DISCHARGE_STATUS_SELECT)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_DISCHARGE_STATUS_SELECT())));
         this.genderSelect.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_GENDER_SELECT)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_GENDER_SELECT())));
 
         this.languageSelect.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_LANGUAGE_SELECT)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_LANGUAGE_SELECT())));
         this.lengthOfStaySelect.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_LENGTH_OF_STAY)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_LENGTH_OF_STAY())));
         this.raceSelect.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_RACE_SELECT)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_RACE_SELECT())));
         this.serviceLineSelect.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_SERVICE_LINE_SELECT)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_SERVICE_LINE_SELECT())));
 
         this.applyButton.setUnderlyingWebElement(this.driver
-                .findVisibleElement(By.id(ELEMENT_ID_APPLY_BUTTON)));
+                .findVisibleElement(By.id(appProps.getDF_ELEMENT_ID_APPLY_BUTTON())));
 
         return this;
     }

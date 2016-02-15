@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.UnhandledAlertException;
@@ -34,50 +35,9 @@ import com.olenick.selenium.elements.ExtendedWebElement;
  */
 public class PatientExperienceIFrame extends
         WelcomePageIFrame<PatientExperienceIFrame> {
+    private static ICare2Props appProps = ICare2Props.getInstance();
     private final static Logger log = LoggerFactory
             .getLogger(PatientExperienceIFrame.class);
-
-    private static final String ATTRIBUTE_NAME_VALUE = "value";
-    private static final String ELEMENT_ID_APPLY_BUTTON = "button2";
-    private static final String ELEMENT_ID_CALCULATION_MEAN_RADIO = "top_box_0";
-    private static final String ELEMENT_ID_CALCULATION_TOP_BOX_RADIO = "top_box_1";
-    private static final String ELEMENT_ID_CANCEL_BUTTON = "button4";
-    private static final String ELEMENT_ID_CHANGE_SYSTEM_BUTTON = "chngsys";
-    private static final String ELEMENT_ID_COMPOSITE_SELECT = "factor";
-    private static final String ELEMENT_ID_COMPOSITE_TAB = "tabitem2";
-    private static final String ELEMENT_ID_DATA_SET_ALL_RADIO = "dataset_1";
-    private static final String ELEMENT_ID_DATA_SET_QUALIFIED_RADIO = "dataset_0";
-    private static final String ELEMENT_ID_DATE_RANGE_DISCHARGE_VISIT_RADIO = "date_key_0";
-    private static final String ELEMENT_ID_DATE_RANGE_FROM_MONTH_SELECT = "from_mnth";
-    private static final String ELEMENT_ID_DATE_RANGE_FROM_SPAN = "maskdvfrom";
-    private static final String ELEMENT_ID_DATE_RANGE_FROM_YEAR_SELECT = "from_year";
-    private static final String ELEMENT_ID_DATE_RANGE_SURVEY_RETURN_RADIO = "date_key_1";
-    private static final String ELEMENT_ID_DATE_RANGE_TO_MONTH_SELECT = "to_mnth";
-    private static final String ELEMENT_ID_DATE_RANGE_TO_SPAN = "maskdvto";
-    private static final String ELEMENT_ID_DATE_RANGE_TO_YEAR_SELECT = "to_year";
-    private static final String ELEMENT_ID_DEMOGRAPHICS_FILTER_LINK = "demogrph";
-    private static final String ELEMENT_ID_DEMOGRAPHICS_TAB = "tabitem1";
-    private static final String ELEMENT_ID_DEPARTMENT_SELECT = "department";
-    private static final String ELEMENT_ID_GROUP_BY_SELECT = "date_option";
-    private static final String ELEMENT_ID_HCAHPS_NATIONAL_TAB = "tabitem7";
-    private static final String ELEMENT_ID_ITEM_SELECT = "item";
-    private static final String ELEMENT_ID_KEEP_VISIBLE_CHECKBOX = "checkbox1_0";
-    private static final String ELEMENT_ID_LOCATION_SELECT = "location";
-    private static final String ELEMENT_ID_ORGANIZATION_SELECT = "organization";
-    private static final String ELEMENT_ID_OVERVIEW_TAB = "tabitem4";
-    private static final String ELEMENT_ID_PATIENT_TYPE_SELECT = "patienttype";
-    private static final String ELEMENT_ID_PROVIDER_FILTER_LINK = "prdgrp";
-    private static final String ELEMENT_ID_RESET_BUTTON = "button3";
-    private static final String ELEMENT_ID_RESPONSE_FILTER_LINK = "qfltr";
-    private static final String ELEMENT_ID_SAVE_SELECTIONS_BUTTON = "buttonsave";
-    private static final String ELEMENT_ID_SAVE_SELECTIONS_CHECKBOX = "checkboxsave2_0";
-    private static final String ELEMENT_ID_SELECTIONS_NAME_INPUT = "txtname";
-    private static final String ELEMENT_ID_SET_SELECTIONS_AS_DEFAULT_CHECKBOX = "checkbox3_0";
-    private static final String ELEMENT_ID_SHARE_SELECTIONS_CHECKBOX = "checkbox4_0";
-    private static final String ELEMENT_ID_SIDE_BY_SIDE_TAB = "tabitem3";
-    private static final String ELEMENT_ID_SURVEY_TYPE_SELECT = "surveytype";
-    private static final String ELEMENT_ID_SYSTEM_SELECT = "system";
-    private static final String XPATH_RELATIVE_ALL_REPORT_TABS = "../span";
 
     private final LoggedInWelcomePage parent;
 
@@ -148,7 +108,7 @@ public class PatientExperienceIFrame extends
     public PatientExperienceIFrame changeSystem(ReportFilter reportFilter) {
         this.accessPanelFrame();
         if (!this.systemSelect.getFirstSelectedOption()
-                .getAttribute(ATTRIBUTE_NAME_VALUE)
+                .getAttribute(appProps.getPE_ATTRIBUTE_NAME_VALUE())
                 .equals(reportFilter.getSystem())) {
             return this.openChangeSystemPanel()
                     .chooseSystem(reportFilter.getSystem(), null, null)
@@ -208,14 +168,14 @@ public class PatientExperienceIFrame extends
             ReportFilter reportFilter) {
         if (reportFilter != null) {
             this.accessPanelFrame();
-            // THESE NEXT THREE LINES ARE A BIT RIDICULOUS,
+            // TODO: THESE NEXT THREE LINES ARE A BIT RIDICULOUS,
             // BUT IT DOESN'T WORK OTHERWISE...
             this.surveyTypeSelect.sendKeys(reportFilter.getSurveyType());
             this.surveyTypeSelect.click();
             this.surveyTypeSelect.click();
             loadCombos("surveyType", reportFilter.getSurveyType());
             new Select(this.getDriver().findElement(
-                    By.id(ELEMENT_ID_SURVEY_TYPE_SELECT)))
+                    By.id(appProps.getPE_ELEMENT_ID_SURVEY_TYPE_SELECT())))
                     .selectByValue(reportFilter.getSurveyType());
             this.patientTypeSelect.safeSelectByValue(true,
                     reportFilter.getPatientTypes());
@@ -478,7 +438,7 @@ public class PatientExperienceIFrame extends
 
     protected void waitForChangeSystemButtonToLoad() {
         this.setElements(this.changeSystemButton).byId(
-                ELEMENT_ID_CHANGE_SYSTEM_BUTTON);
+                appProps.getPE_ELEMENT_ID_CHANGE_SYSTEM_BUTTON());
     }
 
     protected void waitForButtonsToLoad() {
@@ -486,14 +446,17 @@ public class PatientExperienceIFrame extends
                 this.keepVisibleCheckbox, this.saveSelectionsCheckbox,
                 this.selectionsNameInput, this.setSelectionsAsDefaultCheckbox,
                 this.shareSelectionsCheckbox, this.saveSelectionsButton)
-                .byId(true, ELEMENT_ID_APPLY_BUTTON, ELEMENT_ID_CANCEL_BUTTON,
-                        ELEMENT_ID_RESET_BUTTON,
-                        ELEMENT_ID_KEEP_VISIBLE_CHECKBOX,
-                        ELEMENT_ID_SAVE_SELECTIONS_CHECKBOX)
-                .byId(false, ELEMENT_ID_SELECTIONS_NAME_INPUT,
-                        ELEMENT_ID_SET_SELECTIONS_AS_DEFAULT_CHECKBOX,
-                        ELEMENT_ID_SHARE_SELECTIONS_CHECKBOX,
-                        ELEMENT_ID_SAVE_SELECTIONS_BUTTON);
+                .byId(true,
+                        appProps.getPE_ELEMENT_ID_APPLY_BUTTON(),
+                        appProps.getPE_ELEMENT_ID_CANCEL_BUTTON(),
+                        appProps.getPE_ELEMENT_ID_RESET_BUTTON(),
+                        appProps.getPE_ELEMENT_ID_KEEP_VISIBLE_CHECKBOX(),
+                        appProps.getPE_ELEMENT_ID_SAVE_SELECTIONS_CHECKBOX())
+                .byId(false,
+                        appProps.getPE_ELEMENT_ID_SELECTIONS_NAME_INPUT(),
+                        appProps.getPE_ELEMENT_ID_SET_SELECTIONS_AS_DEFAULT_CHECKBOX(),
+                        appProps.getPE_ELEMENT_ID_SHARE_SELECTIONS_CHECKBOX(),
+                        appProps.getPE_ELEMENT_ID_SAVE_SELECTIONS_BUTTON());
     }
 
     protected void waitForCalculationToLoad() {
@@ -501,13 +464,13 @@ public class PatientExperienceIFrame extends
                 this.calculationTopBoxRadio, this.dataSetQualifiedRadio,
                 this.dataSetAllRadio, this.demographicsFilterLink,
                 this.responseFilterLink, this.providerFilterLink).byId(true,
-                ELEMENT_ID_CALCULATION_MEAN_RADIO,
-                ELEMENT_ID_CALCULATION_TOP_BOX_RADIO,
-                ELEMENT_ID_DATA_SET_QUALIFIED_RADIO,
-                ELEMENT_ID_DATA_SET_ALL_RADIO,
-                ELEMENT_ID_DEMOGRAPHICS_FILTER_LINK,
-                ELEMENT_ID_RESPONSE_FILTER_LINK,
-                ELEMENT_ID_PROVIDER_FILTER_LINK);
+                appProps.getPE_ELEMENT_ID_CALCULATION_MEAN_RADIO(),
+                appProps.getPE_ELEMENT_ID_CALCULATION_TOP_BOX_RADIO(),
+                appProps.getPE_ELEMENT_ID_DATA_SET_QUALIFIED_RADIO(),
+                appProps.getPE_ELEMENT_ID_DATA_SET_ALL_RADIO(),
+                appProps.getPE_ELEMENT_ID_DEMOGRAPHICS_FILTER_LINK(),
+                appProps.getPE_ELEMENT_ID_RESPONSE_FILTER_LINK(),
+                appProps.getPE_ELEMENT_ID_PROVIDER_FILTER_LINK());
     }
 
     protected void waitForDateRangeToLoad() {
@@ -516,33 +479,39 @@ public class PatientExperienceIFrame extends
                 this.dateRangeToSpan, this.dateRangeGroupBySelect,
                 this.dateRangeFromMonthSelect, this.dateRangeFromYearSelect,
                 this.dateRangeToMonthSelect, this.dateRangeToYearSelect)
-                .byId(true, ELEMENT_ID_DATE_RANGE_DISCHARGE_VISIT_RADIO,
-                        ELEMENT_ID_DATE_RANGE_SURVEY_RETURN_RADIO,
-                        ELEMENT_ID_DATE_RANGE_FROM_SPAN,
-                        ELEMENT_ID_DATE_RANGE_TO_SPAN,
-                        ELEMENT_ID_GROUP_BY_SELECT)
-                .byId(false, ELEMENT_ID_DATE_RANGE_FROM_MONTH_SELECT,
-                        ELEMENT_ID_DATE_RANGE_FROM_YEAR_SELECT,
-                        ELEMENT_ID_DATE_RANGE_TO_MONTH_SELECT,
-                        ELEMENT_ID_DATE_RANGE_TO_YEAR_SELECT);
+                .byId(true,
+                        appProps.getPE_ELEMENT_ID_DATE_RANGE_DISCHARGE_VISIT_RADIO(),
+                        appProps.getPE_ELEMENT_ID_DATE_RANGE_SURVEY_RETURN_RADIO(),
+                        appProps.getPE_ELEMENT_ID_DATE_RANGE_FROM_SPAN(),
+                        appProps.getPE_ELEMENT_ID_DATE_RANGE_TO_SPAN(),
+                        appProps.getPE_ELEMENT_ID_GROUP_BY_SELECT())
+                .byId(false,
+                        appProps.getPE_ELEMENT_ID_DATE_RANGE_FROM_MONTH_SELECT(),
+                        appProps.getPE_ELEMENT_ID_DATE_RANGE_FROM_YEAR_SELECT(),
+                        appProps.getPE_ELEMENT_ID_DATE_RANGE_TO_MONTH_SELECT(),
+                        appProps.getPE_ELEMENT_ID_DATE_RANGE_TO_YEAR_SELECT());
     }
 
     protected void waitForReportLevelToLoad() {
         this.setElements(this.systemSelect, this.organizationSelect,
                 this.departmentSelect, this.locationSelect).byId(true,
-                ELEMENT_ID_SYSTEM_SELECT, ELEMENT_ID_ORGANIZATION_SELECT,
-                ELEMENT_ID_DEPARTMENT_SELECT, ELEMENT_ID_LOCATION_SELECT);
+                appProps.getPE_ELEMENT_ID_SYSTEM_SELECT(),
+                appProps.getPE_ELEMENT_ID_ORGANIZATION_SELECT(),
+                appProps.getPE_ELEMENT_ID_DEPARTMENT_SELECT(),
+                appProps.getPE_ELEMENT_ID_LOCATION_SELECT());
     }
 
     protected void waitForReportTabsToLoad() {
         this.setElements(this.overviewTab, this.compositeTab,
                 this.sideBySideTab, this.demographicsTab).byId(true,
-                ELEMENT_ID_OVERVIEW_TAB, ELEMENT_ID_COMPOSITE_TAB,
-                ELEMENT_ID_SIDE_BY_SIDE_TAB, ELEMENT_ID_DEMOGRAPHICS_TAB);
+                appProps.getPE_ELEMENT_ID_OVERVIEW_TAB(),
+                appProps.getPE_ELEMENT_ID_COMPOSITE_TAB(),
+                appProps.getPE_ELEMENT_ID_SIDE_BY_SIDE_TAB(),
+                appProps.getPE_ELEMENT_ID_DEMOGRAPHICS_TAB());
         // TODO: Find a better way to do this...
         for (WebElement tabRelated : this.overviewTab.findElements(By
-                .xpath(XPATH_RELATIVE_ALL_REPORT_TABS))) {
-            if (ELEMENT_ID_HCAHPS_NATIONAL_TAB.equals(tabRelated
+                .xpath(appProps.getPE_XPATH_RELATIVE_ALL_REPORT_TABS()))) {
+            if (appProps.getPE_ELEMENT_ID_HCAHPS_NATIONAL_TAB().equals(tabRelated
                     .getAttribute("id"))) {
                 this.hcahpsNationalTab.setUnderlyingWebElement(tabRelated);
                 break;
@@ -553,7 +522,9 @@ public class PatientExperienceIFrame extends
     protected void waitForSurveySelectionToLoad() {
         this.setElements(this.surveyTypeSelect, this.patientTypeSelect,
                 this.compositeSelect, this.itemSelect).byId(true,
-                ELEMENT_ID_SURVEY_TYPE_SELECT, ELEMENT_ID_PATIENT_TYPE_SELECT,
-                ELEMENT_ID_COMPOSITE_SELECT, ELEMENT_ID_ITEM_SELECT);
+                appProps.getPE_ELEMENT_ID_SURVEY_TYPE_SELECT(),
+                appProps.getPE_ELEMENT_ID_PATIENT_TYPE_SELECT(),
+                appProps.getPE_ELEMENT_ID_COMPOSITE_SELECT(),
+                appProps.getPE_ELEMENT_ID_ITEM_SELECT());
     }
 }

@@ -4,6 +4,7 @@ import java.util.EnumMap;
 
 import javax.validation.constraints.NotNull;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import org.openqa.selenium.By;
 
 import com.olenick.avatar.icare2.model.ProviderFilter;
@@ -18,15 +19,7 @@ import com.olenick.selenium.elements.ExtendedWebElement;
  * "Filter by Provider" panel inside "REPORT FILTERS".
  */
 public class FilterByProviderPanel extends WebContainer<FilterByProviderPanel> {
-    public static final String ELEMENT_ID_APPLY_BUTTON = "applycpg";
-    public static final String ELEMENT_ID_CLOSE_BUTTON = "imgclscpg";
-    public static final String ELEMENT_ID_CUSTOM_GROUPING_LIST = "prvdr";
-    public static final String ELEMENT_ID_CUSTOM_GROUPING_RADIO = "cstprvgr";
-    public static final String ELEMENT_ID_DEPARTMENT_DIVISION_LIST = "division";
-    public static final String ELEMENT_ID_DEPARTMENT_DIVISION_RADIO = "dptdvs";
-    public static final String ELEMENT_ID_PRIMARY_SPECIALTY_LIST = "splty";
-    public static final String ELEMENT_ID_PRIMARY_SPECIALTY_RADIO = "prisplty";
-    public static final String ELEMENT_ID_PROVIDERS_LIST = "dprvdrs";
+    private static ICare2Props appProps = ICare2Props.getInstance();
 
     private PatientExperienceIFrame parent;
 
@@ -95,27 +88,27 @@ public class FilterByProviderPanel extends WebContainer<FilterByProviderPanel> {
     @Override
     public FilterByProviderPanel waitForElementsToLoad() {
         this.closeButton.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_CLOSE_BUTTON)));
+                .id(appProps.getPF_ELEMENT_ID_CLOSE_BUTTON())));
 
         this.departmentDivisionRadio.setUnderlyingWebElement(this.driver
-                .findElement(By.id(ELEMENT_ID_DEPARTMENT_DIVISION_RADIO)));
+                .findElement(By.id(appProps.getPF_ELEMENT_ID_DEPARTMENT_DIVISION_RADIO())));
         this.primarySpecialtyRadio.setUnderlyingWebElement(this.driver
-                .findElement(By.id(ELEMENT_ID_PRIMARY_SPECIALTY_RADIO)));
+                .findElement(By.id(appProps.getPF_ELEMENT_ID_PRIMARY_SPECIALTY_RADIO())));
         this.customGroupingRadio.setUnderlyingWebElement(this.driver
-                .findElement(By.id(ELEMENT_ID_CUSTOM_GROUPING_RADIO)));
+                .findElement(By.id(appProps.getPF_ELEMENT_ID_CUSTOM_GROUPING_RADIO())));
 
         this.customGroupingList.setUnderlyingWebElement(this.driver
-                .findElement(By.id(ELEMENT_ID_CUSTOM_GROUPING_LIST)));
+                .findElement(By.id(appProps.getPF_ELEMENT_ID_CUSTOM_GROUPING_LIST())));
         this.departmentDivisionList.setUnderlyingWebElement(this.driver
-                .findElement(By.id(ELEMENT_ID_DEPARTMENT_DIVISION_LIST)));
+                .findElement(By.id(appProps.getPF_ELEMENT_ID_DEPARTMENT_DIVISION_LIST())));
         this.primarySpecialtyList.setUnderlyingWebElement(this.driver
-                .findElement(By.id(ELEMENT_ID_PRIMARY_SPECIALTY_LIST)));
+                .findElement(By.id(appProps.getPF_ELEMENT_ID_PRIMARY_SPECIALTY_LIST())));
 
         this.providersList.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_PROVIDERS_LIST)));
+                .id(appProps.getPF_ELEMENT_ID_PROVIDERS_LIST())));
 
         this.applyButton.setUnderlyingWebElement(this.driver.findElement(By
-                .id(ELEMENT_ID_APPLY_BUTTON)));
+                .id(appProps.getPF_ELEMENT_ID_APPLY_BUTTON())));
 
         return this;
     }

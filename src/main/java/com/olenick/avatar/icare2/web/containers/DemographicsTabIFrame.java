@@ -2,6 +2,7 @@ package com.olenick.avatar.icare2.web.containers;
 
 import javax.validation.constraints.NotNull;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +16,9 @@ import com.olenick.selenium.drivers.ExtendedRemoteWebDriver;
  */
 public class DemographicsTabIFrame extends
         ReportGraphsTabIFrame<DemographicsTabIFrame> {
+    private static ICare2Props appProps = ICare2Props.getInstance();
     private static final Logger log = LoggerFactory
             .getLogger(DemographicsTabIFrame.class);
-
-    private static final String ELEMENT_ID_BAR_GRAPH_FRAME = "report1";
-    private static final String ELEMENT_ID_EXPORT_ALL_TO_PDF_LINK = "image45";
-    private static final String ELEMENT_ID_GRID_FRAME = "report33";
-    private static final String ELEMENT_ID_LINE_GRAPH_FRAME = "report2";
-    private static final String ELEMENT_ID_RESULTS_FRAME = "report3";
 
     private PatientExperienceIFrame parent;
 
@@ -33,20 +29,20 @@ public class DemographicsTabIFrame extends
     }
 
     public DemographicsTabIFrame accessBarGraphFrame() {
-        return this.accessFrame(ELEMENT_ID_BAR_GRAPH_FRAME);
+        return this.accessFrame(appProps.getD_ELEMENT_ID_BAR_GRAPH_FRAME());
     }
 
     public DemographicsTabIFrame accessGridFrame() {
-        return this.accessFrame(ELEMENT_ID_GRID_FRAME);
+        return this.accessFrame(appProps.getD_ELEMENT_ID_GRID_FRAME());
     }
 
     public DemographicsTabIFrame accessLineGraphFrame() {
-        return this.accessFrame(ELEMENT_ID_LINE_GRAPH_FRAME);
+        return this.accessFrame(appProps.getD_ELEMENT_ID_LINE_GRAPH_FRAME());
     }
 
     public DemographicsTabIFrame accessResultsFrame() {
         this.parent.accessPanelFrame();
-        this.switchToFrame(ELEMENT_ID_RESULTS_FRAME);
+        this.switchToFrame(appProps.getD_ELEMENT_ID_RESULTS_FRAME());
         return this;
     }
 
@@ -67,7 +63,7 @@ public class DemographicsTabIFrame extends
     @Override
     public DemographicsTabIFrame exportToPDF() {
         this.accessResultsFrame();
-        this.driver.findElement(By.id(ELEMENT_ID_EXPORT_ALL_TO_PDF_LINK))
+        this.driver.findElement(By.id(appProps.getD_ELEMENT_ID_EXPORT_ALL_TO_PDF_LINK()))
                 .click();
         this.handlePDFNewWindow();
         return this;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -16,15 +17,7 @@ import com.olenick.selenium.drivers.ExtendedRemoteWebDriver;
  */
 public class HCAHPSNationalTabIFrame extends
         ReportGraphsTabIFrame<HCAHPSNationalTabIFrame> {
-    private static final long TIMEOUT_SECS_GET_ROWS = 240;
-
-    private static final String ELEMENT_ID_GRAPHS_FRAME = "oldreport";
-    private static final String ELEMENT_ID_RESULTS_FRAME = "reportvbp";
-    // private static final String FACILITY_SELECT = "FACT";
-    // private static final String FACILITY_SELECTION_VALUE = "ALL";
-    private static final String XPATH_ROWS = "//td/b/font[normalize-space(text())='HCAHPS Composite']/../../../../tr[position()>4]";
-    private static final String XPATH_RELATIVE_ITEM_NAME = "td[1]";
-    private static final String XPATH_RELATIVE_ADJUSTED_SCORE = "td[2]";
+    private static ICare2Props appProps = ICare2Props.getInstance();
 
     private PatientExperienceIFrame parent;
 
@@ -36,13 +29,13 @@ public class HCAHPSNationalTabIFrame extends
 
     public HCAHPSNationalTabIFrame accessGraphsFrame() {
         this.accessResultsFrame();
-        this.switchToFrame(ELEMENT_ID_GRAPHS_FRAME);
+        this.switchToFrame(appProps.getHCSHPS_ELEMENT_ID_GRAPHS_FRAME());
         return this;
     }
 
     public HCAHPSNationalTabIFrame accessResultsFrame() {
         this.parent.accessPanelFrame();
-        this.switchToFrame(ELEMENT_ID_RESULTS_FRAME);
+        this.switchToFrame(appProps.getHCSHPS_ELEMENT_ID_RESULTS_FRAME());
         return this;
     }
 
@@ -62,10 +55,10 @@ public class HCAHPSNationalTabIFrame extends
         if (this.dataAvailable) {
             for (WebElement row : this.getRows()) {
                 String itemName = row
-                        .findElement(By.xpath(XPATH_RELATIVE_ITEM_NAME))
+                        .findElement(By.xpath(appProps.getHCSHPS_XPATH_RELATIVE_ITEM_NAME()))
                         .getText().trim();
                 float adjustedScore = Float.valueOf(row
-                        .findElement(By.xpath(XPATH_RELATIVE_ADJUSTED_SCORE))
+                        .findElement(By.xpath(appProps.getHCSHPS_XPATH_RELATIVE_ADJUSTED_SCORE()))
                         .getText().trim());
                 result.set(itemName, new HCAHPSNationalValue(adjustedScore));
             }
@@ -77,7 +70,7 @@ public class HCAHPSNationalTabIFrame extends
 
     private List<WebElement> getRows() {
         List<WebElement> rows = this.getDriver().findElements(
-                By.xpath(XPATH_ROWS), TIMEOUT_SECS_GET_ROWS);
+                By.xpath(appProps.getHCSHPS_XPATH_ROWS()), appProps.getHCSHPS_TIMEOUT_SECS_GET_ROWS());
         return rows;
     }
 }

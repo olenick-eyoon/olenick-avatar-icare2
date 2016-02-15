@@ -3,6 +3,7 @@ package com.olenick.avatar.icare2.web.containers;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import com.olenick.selenium.drivers.ExtendedRemoteWebDriver;
 import com.olenick.selenium.elements.ExtendedSelectWebElement;
 import com.olenick.selenium.elements.ExtendedWebElement;
@@ -11,13 +12,7 @@ import com.olenick.selenium.elements.ExtendedWebElement;
  * "Change System" panel.
  */
 public class ChangeSystemPanel extends WelcomePageIFrame<ChangeSystemPanel> {
-    private static final String ELEMENT_ID_APPLY_BUTTON = "btnapply";
-    private static final String ELEMENT_ID_CHANGESYS_IFRAME = "changesys";
-    private static final String ELEMENT_ID_CLOSE_BUTTON = "imgclssys";
-    private static final String ELEMENT_ID_RESET_SEARCH_BUTTON = "sysresetbtn";
-    private static final String ELEMENT_ID_SEARCH_BUTTON = "syssrchbtn";
-    private static final String ELEMENT_ID_SEARCH_INPUT = "syssrchtxt";
-    private static final String ELEMENT_ID_SYSTEM_SELECT = "system";
+    private static ICare2Props appProps = ICare2Props.getInstance();
 
     private final PatientExperienceIFrame parent;
     private ExtendedWebElement searchInput, searchButton, resetSearchButton;
@@ -69,21 +64,24 @@ public class ChangeSystemPanel extends WelcomePageIFrame<ChangeSystemPanel> {
     @Override
     public ChangeSystemPanel waitForElementsToLoad() {
         this.accessPanelFrame();
-        this.setElements(this.closeButton).byId(ELEMENT_ID_CLOSE_BUTTON);
+        this.setElements(this.closeButton).byId(appProps.getELEMENT_ID_CLOSE_BUTTON());
 
         this.accessChangeSysFrame();
         this.setElements(this.searchInput, this.searchButton,
                 this.resetSearchButton, this.systemSelect, this.applyButton)
-                .byId(true, ELEMENT_ID_SEARCH_INPUT, ELEMENT_ID_SEARCH_BUTTON,
-                        ELEMENT_ID_RESET_SEARCH_BUTTON,
-                        ELEMENT_ID_SYSTEM_SELECT, ELEMENT_ID_APPLY_BUTTON);
+                .byId(true,
+                        appProps.getELEMENT_ID_SEARCH_INPUT(),
+                        appProps.getELEMENT_ID_SEARCH_BUTTON(),
+                        appProps.getELEMENT_ID_RESET_SEARCH_BUTTON(),
+                        appProps.getELEMENT_ID_SYSTEM_SELECT(),
+                        appProps.getELEMENT_ID_APPLY_BUTTON());
 
         return this;
     }
 
     protected ChangeSystemPanel accessChangeSysFrame() {
         this.accessPanelFrame();
-        this.switchToFrame(ELEMENT_ID_CHANGESYS_IFRAME);
+        this.switchToFrame(appProps.getELEMENT_ID_CHANGESYS_IFRAME());
         return this;
     }
 }

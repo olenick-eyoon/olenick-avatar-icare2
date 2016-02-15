@@ -2,7 +2,9 @@ package com.olenick.avatar.icare2.web.containers;
 
 import javax.validation.constraints.NotNull;
 
+import com.olenick.avatar.icare2.properties.ICare2Props;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -14,14 +16,8 @@ import com.olenick.selenium.elements.ExtendedWebElement;
  * Improving Care Welcome page when logged in.
  */
 public class LoggedInWelcomePage extends WebContainer<LoggedInWelcomePage> {
-    private static final long TIMEOUT_SWITCH_TO_FRAME = 240;
-    private static final String ELEMENT_NAME_MAIN_IFRAME = "main-iframe";
-    private static final String XPATH_MENU_BAR = "//div[@id='BiHBox-135']";
-    private static final String XPATH_HOME_TAB = XPATH_MENU_BAR + "/div[1]";
-    private static final String XPATH_PATIENT_EXPERIENCE_TAB = XPATH_MENU_BAR
-            + "/div[2]";
-    private static final String XPATH_CONTROL_CENTER_TAB = XPATH_MENU_BAR
-            + "/div[3]";
+    private static ICare2Props appProps = ICare2Props.getInstance();
+
     private ExtendedWebElement homeTab, patientExperienceTab, controlCenterTab;
     private HomeIFrame homeFrame;
     private PatientExperienceIFrame patientExperienceFrame;
@@ -39,37 +35,44 @@ public class LoggedInWelcomePage extends WebContainer<LoggedInWelcomePage> {
     }
 
     public HomeIFrame navigateToHomeTab() {
-        this.homeTab.click();
+        //TODO: This is not working well
+        //this.homeTab.click();
+        this.homeTab.sendKeys(Keys.ENTER);
         return this.homeFrame;
     }
 
     public PatientExperienceIFrame navigateToPatientExperienceTab() {
-        this.patientExperienceTab.click();
+        //TODO: This is not working well
+        //this.patientExperienceTab.click();
+        this.patientExperienceTab.sendKeys(Keys.ENTER);
         return this.patientExperienceFrame;
     }
 
     public ControlCenterIFrame navigateToControlCenterTab() {
-        this.controlCenterTab.click();
+        //TODO: This is not working well
+        //this.controlCenterTab.click();
+        this.controlCenterTab.sendKeys(Keys.ENTER);
         return this.controlCenterFrame;
     }
 
     public LoggedInWelcomePage switchToMainIFrame() {
+        //TODO: Why is needed the following line?
         this.driver.switchTo().defaultContent();
-        new WebDriverWait(this.driver, TIMEOUT_SWITCH_TO_FRAME)
+        new WebDriverWait(this.driver, appProps.getTIMEOUT_SWITCH_TO_FRAME())
                 .until(ExpectedConditions
-                        .frameToBeAvailableAndSwitchToIt(ELEMENT_NAME_MAIN_IFRAME));
+                        .frameToBeAvailableAndSwitchToIt(By.name(appProps.getELEMENT_NAME_MAIN_IFRAME())));
         return this;
     }
 
     @Override
     public LoggedInWelcomePage waitForElementsToLoad() {
         this.switchToMainIFrame();
-        this.homeTab.setUnderlyingWebElement(this.driver.findElement(By
-                .xpath(XPATH_HOME_TAB)));
+        this.homeTab.setUnderlyingWebElement(this.driver.findElement(ExpectedConditions.elementToBeClickable(By
+                .xpath(appProps.getXPATH_HOME_TAB()))));
         this.patientExperienceTab.setUnderlyingWebElement(this.driver
-                .findElement(By.xpath(XPATH_PATIENT_EXPERIENCE_TAB)));
+                .findElement(ExpectedConditions.elementToBeClickable(By.xpath(appProps.getXPATH_PATIENT_EXPERIENCE_TAB()))));
         this.controlCenterTab.setUnderlyingWebElement(this.driver
-                .findElement(By.xpath(XPATH_CONTROL_CENTER_TAB)));
+                .findElement(ExpectedConditions.elementToBeClickable(By.xpath(appProps.getXPATH_CONTROL_CENTER_TAB()))));
         return this;
     }
 }
